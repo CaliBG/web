@@ -686,7 +686,7 @@
       font-size: 16px;
     }
 
-    /* Screen switching with transition */
+    /* Screen switching */
     .screen {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -694,30 +694,30 @@
       flex-direction: column;
       width: 100%;
       height: 100%;
-      opacity: 0;
-      transform: translateX(100%);
-      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
     }
 
     .screen.active {
-      opacity: 1;
-      transform: translateX(0);
       pointer-events: auto;
     }
 
+    /* Calendar always stays in place */
     #calendar-screen {
-      transform: translateX(0);
+      opacity: 1;
+      transform: none;
+      z-index: 1;
     }
 
-    #calendar-screen.active ~ #weather-screen:not(.active) {
+    /* Weather slides in from right on top */
+    #weather-screen {
+      z-index: 2;
+      background: #fff;
       transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    #weather-screen.active ~ #calendar-screen,
-    #calendar-screen:not(.active) {
-      transform: translateX(-30%);
-      opacity: 0.5;
+    #weather-screen.active {
+      transform: translateX(0);
     }
 
 
@@ -1031,14 +1031,12 @@
       weatherDateLabel.textContent = date.replace('April ', 'Apr ');
       weatherDayTitle.textContent = day + "'s Weather";
       weatherDateInfo.textContent = day + ', ' + date + ', 2026';
-      calendarScreen.classList.remove('active');
-      setTimeout(() => weatherScreen.classList.add('active'), 10);
+      weatherScreen.classList.add('active');
     }
 
     function navigateBack(e) {
       if (e) e.preventDefault();
       weatherScreen.classList.remove('active');
-      setTimeout(() => calendarScreen.classList.add('active'), 10);
     }
 
     // Page load animation: cards cascade in from below
