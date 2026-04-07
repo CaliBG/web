@@ -78,7 +78,7 @@
     }
 
     .month-title {
-      font-size: 52px;
+      font-size: 60px;
       font-weight: 100;
       color: #000;
       letter-spacing: -3px;
@@ -86,7 +86,7 @@
     }
 
     .year-label {
-      font-size: 52px;
+      font-size: 60px;
       font-weight: 800;
       color: #000;
       letter-spacing: -3px;
@@ -191,8 +191,8 @@
     /* Today Card */
     .day-card.today {
       top: 0;
-      left: 16px;
-      right: 16px;
+      left: 18px;
+      right: 18px;
       width: auto;
       height: 130px;
       z-index: 80;
@@ -265,9 +265,9 @@
 
     /* Tuesday */
     .day-card.tuesday {
-      top: 95px;
-      left: 22px;
-      right: 22px;
+      top: 80px;
+      left: 24px;
+      right: 24px;
       width: auto;
       height: 140px;
       z-index: 70;
@@ -280,9 +280,9 @@
 
     /* Wednesday */
     .day-card.wednesday {
-      top: 125px;
-      left: 28px;
-      right: 28px;
+      top: 108px;
+      left: 30px;
+      right: 30px;
       width: auto;
       height: 135px;
       z-index: 60;
@@ -296,9 +296,9 @@
 
     /* Thursday */
     .day-card.thursday {
-      top: 150px;
-      left: 34px;
-      right: 34px;
+      top: 132px;
+      left: 36px;
+      right: 36px;
       width: auto;
       height: 130px;
       z-index: 50;
@@ -312,9 +312,9 @@
 
     /* Friday */
     .day-card.friday {
-      top: 172px;
-      left: 40px;
-      right: 40px;
+      top: 153px;
+      left: 42px;
+      right: 42px;
       width: auto;
       height: 130px;
       z-index: 40;
@@ -328,9 +328,9 @@
 
     /* Saturday */
     .day-card.saturday {
-      top: 191px;
-      left: 46px;
-      right: 46px;
+      top: 171px;
+      left: 48px;
+      right: 48px;
       width: auto;
       height: 125px;
       z-index: 30;
@@ -344,9 +344,9 @@
 
     /* Sunday */
     .day-card.sunday {
-      top: 208px;
-      left: 52px;
-      right: 52px;
+      top: 187px;
+      left: 54px;
+      right: 54px;
       width: auto;
       height: 125px;
       z-index: 20;
@@ -360,9 +360,9 @@
 
     /* Monday (next week) */
     .day-card.next-monday {
-      top: 222px;
-      left: 58px;
-      right: 58px;
+      top: 200px;
+      left: 60px;
+      right: 60px;
       width: auto;
       height: 120px;
       z-index: 10;
@@ -976,13 +976,13 @@
     const cardSpacing = 150; // spacing when fully expanded
     const cards = [
       { sel: '.today',       top: 0,   stackY: 0,   expandY: 0 * cardSpacing, scaleMin: 1,    scaleExpand: 1 },
-      { sel: '.tuesday',     top: 95,  stackY: 18,  expandY: 1 * cardSpacing, scaleMin: 0.97, scaleExpand: 0.98 },
-      { sel: '.wednesday',   top: 125, stackY: 32,  expandY: 2 * cardSpacing, scaleMin: 0.94, scaleExpand: 0.96 },
-      { sel: '.thursday',    top: 150, stackY: 44,  expandY: 3 * cardSpacing, scaleMin: 0.91, scaleExpand: 0.94 },
-      { sel: '.friday',      top: 172, stackY: 54,  expandY: 4 * cardSpacing, scaleMin: 0.88, scaleExpand: 0.92 },
-      { sel: '.saturday',    top: 191, stackY: 62,  expandY: 5 * cardSpacing, scaleMin: 0.85, scaleExpand: 0.90 },
-      { sel: '.sunday',      top: 208, stackY: 68,  expandY: 6 * cardSpacing, scaleMin: 0.82, scaleExpand: 0.88 },
-      { sel: '.next-monday', top: 222, stackY: 73,  expandY: 7 * cardSpacing, scaleMin: 0.79, scaleExpand: 0.86 },
+      { sel: '.tuesday',     top: 80,  stackY: 18,  expandY: 1 * cardSpacing, scaleMin: 0.97, scaleExpand: 0.98 },
+      { sel: '.wednesday',   top: 108, stackY: 32,  expandY: 2 * cardSpacing, scaleMin: 0.94, scaleExpand: 0.96 },
+      { sel: '.thursday',    top: 132, stackY: 44,  expandY: 3 * cardSpacing, scaleMin: 0.91, scaleExpand: 0.94 },
+      { sel: '.friday',      top: 153, stackY: 54,  expandY: 4 * cardSpacing, scaleMin: 0.88, scaleExpand: 0.92 },
+      { sel: '.saturday',    top: 171, stackY: 62,  expandY: 5 * cardSpacing, scaleMin: 0.85, scaleExpand: 0.90 },
+      { sel: '.sunday',      top: 187, stackY: 68,  expandY: 6 * cardSpacing, scaleMin: 0.82, scaleExpand: 0.88 },
+      { sel: '.next-monday', top: 200, stackY: 73,  expandY: 7 * cardSpacing, scaleMin: 0.79, scaleExpand: 0.86 },
     ];
     const cardEls = cards.map(c => ({ ...c, el: document.querySelector(c.sel) }));
     let currentExpandRatio = 0; // 0 = normal, 1 = fully expanded by tilt
