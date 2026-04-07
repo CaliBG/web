@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Calendar & Weather App</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
@@ -13,37 +13,40 @@
       box-sizing: border-box;
     }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-      min-height: 100vh;
+    html, body {
+      height: 100%;
     }
 
-    /* Phone Frame */
-    .phone {
-      width: 390px;
-      height: 844px;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: #ffffff;
-      border-radius: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      min-height: 100vh;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* App Container */
+    .phone {
+      width: 100%;
+      height: 100vh;
+      background: #ffffff;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
-      flex-shrink: 0;
     }
 
-    /* Status Bar */
+    /* Status Bar - safe area for notch */
     .status-bar {
       width: 100%;
-      height: 62px;
+      height: calc(env(safe-area-inset-top, 20px) + 24px);
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      padding: 0 24px;
+      padding: 0 24px 4px;
     }
 
     .status-bar .time {
@@ -99,10 +102,12 @@
     }
 
     .cards-section {
-      position: relative;
-      width: 390px;
+      position: sticky;
+      top: 0;
+      width: 100%;
       height: 620px;
       flex-shrink: 0;
+      z-index: 1;
     }
 
     .day-card {
@@ -112,11 +117,8 @@
       background: #fff;
       border-radius: 16px;
       cursor: pointer;
-      transition: all 0.1s ease-out;
-    }
-
-    .day-card:hover {
-      transform: translateY(-2px);
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out, scale 0.15s ease-out;
+      transform-origin: center top;
     }
 
     /* Cards expand state - triggered by device tilt */
@@ -170,7 +172,8 @@
     .day-card.today {
       top: 0;
       left: 20px;
-      width: 350px;
+      right: 20px;
+      width: auto;
       height: 150px;
       padding: 28px;
       gap: 8px;
@@ -179,34 +182,6 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.094), 0 1px 3px rgba(0, 0, 0, 0.063);
     }
 
-    /* Collapsed state: cards stack tightly */
-    .cards-section:not(.expanded) .tuesday {
-      transform: translateY(25px);
-    }
-
-    .cards-section:not(.expanded) .wednesday {
-      transform: translateY(45px);
-    }
-
-    .cards-section:not(.expanded) .thursday {
-      transform: translateY(65px);
-    }
-
-    .cards-section:not(.expanded) .friday {
-      transform: translateY(80px);
-    }
-
-    .cards-section:not(.expanded) .saturday {
-      transform: translateY(95px);
-    }
-
-    .cards-section:not(.expanded) .sunday {
-      transform: translateY(105px);
-    }
-
-    .cards-section:not(.expanded) .next-monday {
-      transform: translateY(115px);
-    }
 
     .today .day-label {
       font-size: 15px;
@@ -322,7 +297,8 @@
     .day-card.tuesday {
       top: 120px;
       left: 22px;
-      width: 346px;
+      right: 22px;
+      width: auto;
       height: 130px;
       padding: 24px;
       gap: 6px;
@@ -334,7 +310,8 @@
     .day-card.wednesday {
       top: 220px;
       left: 24px;
-      width: 342px;
+      right: 24px;
+      width: auto;
       height: 120px;
       padding: 20px 24px;
       gap: 4px;
@@ -346,7 +323,8 @@
     .day-card.thursday {
       top: 310px;
       left: 26px;
-      width: 338px;
+      right: 26px;
+      width: auto;
       height: 120px;
       padding: 20px 24px;
       gap: 4px;
@@ -358,7 +336,8 @@
     .day-card.friday {
       top: 390px;
       left: 28px;
-      width: 334px;
+      right: 28px;
+      width: auto;
       height: 115px;
       padding: 20px 24px;
       gap: 4px;
@@ -370,7 +349,8 @@
     .day-card.saturday {
       top: 460px;
       left: 30px;
-      width: 330px;
+      right: 30px;
+      width: auto;
       height: 110px;
       padding: 20px 24px;
       gap: 4px;
@@ -383,7 +363,8 @@
     .day-card.sunday {
       top: 520px;
       left: 32px;
-      width: 326px;
+      right: 32px;
+      width: auto;
       height: 110px;
       padding: 20px 24px;
       gap: 4px;
@@ -396,7 +377,8 @@
     .day-card.next-monday {
       top: 570px;
       left: 34px;
-      width: 322px;
+      right: 34px;
+      width: auto;
       height: 110px;
       padding: 20px 24px;
       gap: 4px;
@@ -1006,21 +988,67 @@
 
   <script>
     const cardsSection = document.querySelector('.cards-section');
+    const scrollArea = document.querySelector('.scroll-area');
     let lastTiltAngle = 0;
-    const tiltThreshold = 15; // degrees - threshold to trigger expansion
+    const tiltThreshold = 15;
 
-    // Request permission for iOS 13+
-    function requestPermission() {
+    // Card default positions (top values from CSS) and stacked targets
+    const cards = [
+      { sel: '.today',       top: 0,   stackY: 0,   scaleMin: 1 },
+      { sel: '.tuesday',     top: 120, stackY: 25,  scaleMin: 0.97 },
+      { sel: '.wednesday',   top: 220, stackY: 45,  scaleMin: 0.94 },
+      { sel: '.thursday',    top: 310, stackY: 60,  scaleMin: 0.91 },
+      { sel: '.friday',      top: 390, stackY: 72,  scaleMin: 0.88 },
+      { sel: '.saturday',    top: 460, stackY: 82,  scaleMin: 0.85 },
+      { sel: '.sunday',      top: 520, stackY: 90,  scaleMin: 0.82 },
+      { sel: '.next-monday', top: 570, stackY: 96,  scaleMin: 0.79 },
+    ];
+    const cardEls = cards.map(c => ({ ...c, el: document.querySelector(c.sel) }));
+
+    function updateCardsOnScroll() {
+      if (cardsSection.classList.contains('expanded')) return;
+      const scrollY = scrollArea.scrollTop;
+      const maxScroll = 300;
+      const t = Math.min(1, scrollY / maxScroll);
+
+      cardEls.forEach((c, i) => {
+        if (i === 0) {
+          c.el.style.transform = `translateY(0)`;
+          c.el.style.opacity = 1;
+          return;
+        }
+        const y = c.top * (1 - t) + c.stackY * t;
+        const s = 1 * (1 - t) + c.scaleMin * t;
+        const o = 1 - t * (i * 0.06);
+        c.el.style.transform = `translateY(${y}px) scale(${s})`;
+        c.el.style.opacity = Math.max(0.4, o);
+      });
+    }
+
+    scrollArea.addEventListener('scroll', () => {
+      requestAnimationFrame(updateCardsOnScroll);
+    });
+
+    // Set initial state
+    updateCardsOnScroll();
+
+    // Request gyroscope permission
+    let gyroEnabled = false;
+    function enableGyro() {
+      if (gyroEnabled) return;
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        // iOS 13+ requires user gesture to request permission
         DeviceOrientationEvent.requestPermission()
           .then(permissionState => {
             if (permissionState === 'granted') {
+              gyroEnabled = true;
               window.addEventListener('deviceorientation', handleDeviceOrientation);
             }
           })
           .catch(console.error);
-      } else {
-        // Non-iOS 13 devices
+      } else if (window.DeviceOrientationEvent) {
+        // Android and older iOS
+        gyroEnabled = true;
         window.addEventListener('deviceorientation', handleDeviceOrientation);
       }
     }
@@ -1040,8 +1068,11 @@
       // Expand when tilted left beyond threshold, collapse when upright
       if (lastTiltAngle > tiltThreshold) {
         cardsSection.classList.add('expanded');
+        // Clear scroll-based inline styles so CSS expanded rules take over
+        cardEls.forEach(c => { c.el.style.transform = ''; c.el.style.opacity = ''; });
       } else {
         cardsSection.classList.remove('expanded');
+        updateCardsOnScroll();
       }
 
       // Continuous ratio for smooth visual feedback
@@ -1049,11 +1080,11 @@
       cardsSection.style.setProperty('--expand-ratio', expandRatio);
     }
 
-    // Initialize device orientation
-    if (window.DeviceOrientationEvent) {
-      // Try to request permission first (iOS 13+)
-      requestPermission();
-    }
+    // Enable gyroscope on first user touch (required by iOS)
+    document.addEventListener('touchstart', enableGyro, { once: true });
+    document.addEventListener('click', enableGyro, { once: true });
+    // Also try immediately for Android
+    enableGyro();
 
     const calendarScreen = document.getElementById('calendar-screen');
     const weatherScreen = document.getElementById('weather-screen');
@@ -1079,8 +1110,10 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         cardsSection.classList.add('expanded');
+        cardEls.forEach(c => { c.el.style.transform = ''; c.el.style.opacity = ''; });
       } else if (e.key === 'ArrowRight') {
         cardsSection.classList.remove('expanded');
+        updateCardsOnScroll();
       }
     });
   </script>
