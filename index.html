@@ -960,13 +960,6 @@
       const tiltT = currentExpandRatio; // 0=upright, 1=fully tilted
 
       cardEls.forEach((c, i) => {
-        if (i === 0) {
-          c.el.style.transform = 'translateY(0)';
-          c.el.style.opacity = 1;
-          return;
-        }
-        // Blend: scroll stacks cards, tilt expands them
-        // When tilt > 0, interpolate from current position toward expandY
         const scrollY_pos = c.top * (1 - scrollT) + c.stackY * scrollT;
         const y = scrollY_pos * (1 - tiltT) + c.expandY * tiltT;
         const scrollScale = 1 * (1 - scrollT) + c.scaleMin * scrollT;
