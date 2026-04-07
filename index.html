@@ -131,6 +131,41 @@
       letter-spacing: -0.5px;
     }
 
+    .day-card .card-weather {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: absolute;
+      right: 20px;
+      bottom: 16px;
+    }
+
+    .day-card .card-weather .card-temp {
+      font-size: 16px;
+      font-weight: 300;
+      color: rgba(0,0,0,0.5);
+    }
+
+    .day-card .card-weather .card-weather-icon {
+      font-size: 16px;
+      color: rgba(0,0,0,0.4);
+    }
+
+    .day-card.today .card-weather {
+      right: 28px;
+      bottom: 24px;
+    }
+
+    .day-card.today .card-weather .card-temp {
+      font-size: 20px;
+      color: rgba(0,0,0,0.6);
+    }
+
+    .day-card.today .card-weather .card-weather-icon {
+      font-size: 20px;
+      color: rgba(0,0,0,0.5);
+    }
+
     /* Today Card */
     .day-card.today {
       top: 0;
@@ -689,43 +724,73 @@
             <span class="today-badge">TODAY</span>
             <span class="day-label">Monday</span>
             <span class="date-label">April 6</span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud-sun card-weather-icon"></i>
+              <span class="card-temp">22°</span>
+            </div>
           </div>
           <!-- Tuesday -->
           <div class="day-card tuesday" onclick="navigateToWeather('Tuesday', 'April 7')">
             <span class="day-label">Tue.</span>
             <span class="date-label">April 7</span>
-            <span class="dot"></span>
+            <div class="card-weather">
+              <i class="icon-lucide-sun card-weather-icon"></i>
+              <span class="card-temp">25°</span>
+            </div>
           </div>
           <!-- Wednesday -->
           <div class="day-card wednesday" onclick="navigateToWeather('Wednesday', 'April 8')">
             <span class="day-label">Wed.</span>
             <span class="date-label">April 8</span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud card-weather-icon"></i>
+              <span class="card-temp">20°</span>
+            </div>
           </div>
           <!-- Thursday -->
           <div class="day-card thursday" onclick="navigateToWeather('Thursday', 'April 9')">
             <span class="day-label">Thu.</span>
             <span class="date-label">April 9</span>
-            <span class="dot"></span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud-rain card-weather-icon"></i>
+              <span class="card-temp">17°</span>
+            </div>
           </div>
           <!-- Friday -->
           <div class="day-card friday" onclick="navigateToWeather('Friday', 'April 10')">
             <span class="day-label">Fri.</span>
             <span class="date-label">April 10</span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud-drizzle card-weather-icon"></i>
+              <span class="card-temp">16°</span>
+            </div>
           </div>
           <!-- Saturday -->
           <div class="day-card saturday" onclick="navigateToWeather('Saturday', 'April 11')">
             <span class="day-label">Sat.</span>
             <span class="date-label">April 11</span>
+            <div class="card-weather">
+              <i class="icon-lucide-sun card-weather-icon"></i>
+              <span class="card-temp">24°</span>
+            </div>
           </div>
           <!-- Sunday -->
           <div class="day-card sunday" onclick="navigateToWeather('Sunday', 'April 12')">
             <span class="day-label">Sun.</span>
             <span class="date-label">April 12</span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud-sun card-weather-icon"></i>
+              <span class="card-temp">21°</span>
+            </div>
           </div>
           <!-- Next Monday -->
           <div class="day-card next-monday" onclick="navigateToWeather('Monday', 'April 13')">
             <span class="day-label">Mon.</span>
             <span class="date-label">April 13</span>
+            <div class="card-weather">
+              <i class="icon-lucide-cloud card-weather-icon"></i>
+              <span class="card-temp">19°</span>
+            </div>
           </div>
         </div>
 
