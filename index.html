@@ -18,8 +18,7 @@
       background: #f0f0f0;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 40px;
+      align-items: center;
       padding: 40px;
       min-height: 100vh;
     }
@@ -93,11 +92,17 @@
       color: rgba(0, 0, 0, 0.4);
     }
 
-    .cards-section {
+    .scroll-area {
       flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cards-section {
       position: relative;
       width: 390px;
-      overflow: hidden;
+      height: 620px;
+      flex-shrink: 0;
     }
 
     .day-card {
@@ -654,6 +659,97 @@
       letter-spacing: 0.5px;
     }
 
+    /* History Section */
+    .history-section {
+      padding: 32px 24px 40px;
+    }
+
+    .history-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: rgba(0, 0, 0, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .history-item:active {
+      background: #f5f5f5;
+    }
+
+    .history-item .history-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .history-item .history-date-num {
+      font-size: 22px;
+      font-weight: 300;
+      color: #000;
+      width: 32px;
+      text-align: center;
+    }
+
+    .history-item .history-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .history-item .history-day {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .history-item .history-month {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.35);
+    }
+
+    .history-item .history-weather {
+      font-size: 13px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .history-item .history-dot {
+      width: 5px;
+      height: 5px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 50%;
+      margin-left: 8px;
+    }
+
+    /* Screen switching */
+    .screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
     /* Icon font fallback using text */
     .nav-icon {
       font-size: 20px;
@@ -663,81 +759,161 @@
 </head>
 <body>
 
-  <!-- Calendar Screen -->
   <div class="phone">
-    <div class="calendar-header">
+    <!-- Calendar Screen -->
+    <div class="screen active" id="calendar-screen">
+      <div class="calendar-header">
+        <div class="status-bar">
+          <span class="time">9:41</span>
+        </div>
+        <div class="content-wrap">
+          <div class="title-row">
+            <span class="month-title">April 2026</span>
+            <i class="icon-lucide-chevron-left"></i>
+            <i class="icon-lucide-chevron-right"></i>
+          </div>
+          <span class="subtitle">Your Schedule</span>
+        </div>
+      </div>
+      <div class="scroll-area">
+        <div class="cards-section">
+          <!-- Today -->
+          <div class="day-card today" onclick="navigateToWeather('Monday', 'April 6')">
+            <span class="today-badge">TODAY</span>
+            <span class="day-label">Monday</span>
+            <span class="date-label">April 6</span>
+          </div>
+          <!-- Tuesday -->
+          <div class="day-card tuesday" onclick="navigateToWeather('Tuesday', 'April 7')">
+            <span class="day-label">Tue.</span>
+            <span class="date-label">April 7</span>
+            <span class="dot"></span>
+          </div>
+          <!-- Wednesday -->
+          <div class="day-card wednesday" onclick="navigateToWeather('Wednesday', 'April 8')">
+            <span class="day-label">Wed.</span>
+            <span class="date-label">April 8</span>
+          </div>
+          <!-- Thursday -->
+          <div class="day-card thursday" onclick="navigateToWeather('Thursday', 'April 9')">
+            <span class="day-label">Thu.</span>
+            <span class="date-label">April 9</span>
+            <span class="dot"></span>
+          </div>
+          <!-- Friday -->
+          <div class="day-card friday" onclick="navigateToWeather('Friday', 'April 10')">
+            <span class="day-label">Fri.</span>
+            <span class="date-label">April 10</span>
+          </div>
+          <!-- Saturday -->
+          <div class="day-card saturday" onclick="navigateToWeather('Saturday', 'April 11')">
+            <span class="day-label">Sat.</span>
+            <span class="date-label">April 11</span>
+          </div>
+          <!-- Sunday -->
+          <div class="day-card sunday" onclick="navigateToWeather('Sunday', 'April 12')">
+            <span class="day-label">Sun.</span>
+            <span class="date-label">April 12</span>
+          </div>
+          <!-- Next Monday -->
+          <div class="day-card next-monday" onclick="navigateToWeather('Monday', 'April 13')">
+            <span class="day-label">Mon.</span>
+            <span class="date-label">April 13</span>
+          </div>
+        </div>
+
+        <!-- History -->
+        <div class="history-section">
+          <span class="history-title">PAST DAYS</span>
+          <div class="history-list">
+            <div class="history-item" onclick="navigateToWeather('Sunday', 'April 5')">
+              <div class="history-left">
+                <span class="history-date-num">5</span>
+                <div class="history-info">
+                  <span class="history-day">Sunday</span>
+                  <span class="history-month">April 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">18° Sunny</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Saturday', 'April 4')">
+              <div class="history-left">
+                <span class="history-date-num">4</span>
+                <div class="history-info">
+                  <span class="history-day">Saturday</span>
+                  <span class="history-month">April 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">16° Cloudy</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Friday', 'April 3')">
+              <div class="history-left">
+                <span class="history-date-num">3</span>
+                <div class="history-info">
+                  <span class="history-day">Friday</span>
+                  <span class="history-month">April 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">14° Rain</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Thursday', 'April 2')">
+              <div class="history-left">
+                <span class="history-date-num">2</span>
+                <div class="history-info">
+                  <span class="history-day">Thursday</span>
+                  <span class="history-month">April 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">15° Overcast</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Wednesday', 'April 1')">
+              <div class="history-left">
+                <span class="history-date-num">1</span>
+                <div class="history-info">
+                  <span class="history-day">Wednesday</span>
+                  <span class="history-month">April 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">13° Drizzle</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Tuesday', 'March 31')">
+              <div class="history-left">
+                <span class="history-date-num">31</span>
+                <div class="history-info">
+                  <span class="history-day">Tuesday</span>
+                  <span class="history-month">March 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">12° Cloudy</span>
+            </div>
+            <div class="history-item" onclick="navigateToWeather('Monday', 'March 30')">
+              <div class="history-left">
+                <span class="history-date-num">30</span>
+                <div class="history-info">
+                  <span class="history-day">Monday</span>
+                  <span class="history-month">March 2026</span>
+                </div>
+              </div>
+              <span class="history-weather">11° Sunny</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weather Detail Screen -->
+    <div class="screen" id="weather-screen">
       <div class="status-bar">
         <span class="time">9:41</span>
       </div>
-      <div class="content-wrap">
-        <div class="title-row">
-          <span class="month-title">April 2026</span>
+      <div class="top-nav">
+        <a class="back-btn" href="#" onclick="navigateBack(event)">
           <i class="icon-lucide-chevron-left"></i>
-          <i class="icon-lucide-chevron-right"></i>
-        </div>
-        <span class="subtitle">Your Schedule</span>
+          <span>Back</span>
+        </a>
+        <span class="date-label" id="weather-date-label">Apr 6</span>
       </div>
-    </div>
-    <div class="cards-section">
-      <!-- Today -->
-      <div class="day-card today" onclick="navigateToWeather()">
-        <span class="today-badge">TODAY</span>
-        <span class="day-label">Monday</span>
-        <span class="date-label">April 6</span>
-      </div>
-      <!-- Tuesday -->
-      <div class="day-card tuesday">
-        <span class="day-label">Tue.</span>
-        <span class="date-label">April 7</span>
-        <span class="dot"></span>
-      </div>
-      <!-- Wednesday -->
-      <div class="day-card wednesday">
-        <span class="day-label">Wed.</span>
-        <span class="date-label">April 8</span>
-      </div>
-      <!-- Thursday -->
-      <div class="day-card thursday">
-        <span class="day-label">Thu.</span>
-        <span class="date-label">April 9</span>
-        <span class="dot"></span>
-      </div>
-      <!-- Friday -->
-      <div class="day-card friday">
-        <span class="day-label">Fri.</span>
-        <span class="date-label">April 10</span>
-      </div>
-      <!-- Saturday -->
-      <div class="day-card saturday">
-        <span class="day-label">Sat.</span>
-        <span class="date-label">April 11</span>
-      </div>
-      <!-- Sunday -->
-      <div class="day-card sunday">
-        <span class="day-label">Sun.</span>
-        <span class="date-label">April 12</span>
-      </div>
-      <!-- Next Monday -->
-      <div class="day-card next-monday">
-        <span class="day-label">Mon.</span>
-        <span class="date-label">April 13</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Weather Detail Screen -->
-  <div class="phone">
-    <div class="status-bar">
-      <span class="time">9:41</span>
-    </div>
-    <div class="top-nav">
-      <a class="back-btn" href="#" onclick="navigateBack()">
-        <i class="icon-lucide-chevron-left"></i>
-        <span>Back</span>
-      </a>
-      <span class="date-label">Apr 6</span>
-    </div>
-    <div class="weather-content">
+      <div class="weather-content">
       <!-- Weather Section -->
       <div class="weather-section">
         <span class="header">Today's Weather</span>
@@ -824,6 +1000,7 @@
           <span>Monday, April 6, 2026</span>
         </div>
       </div>
+      </div>
     </div>
   </div>
 
@@ -849,18 +1026,18 @@
     }
 
     function handleDeviceOrientation(event) {
-      // beta: phone upright ≈ 90°, flat on table ≈ 0°
       // gamma: -90 to 90 (tilt left/right)
-      const beta = event.beta;
-      if (beta === null) return;
+      // Tilt left → gamma negative, tilt right → gamma positive
+      const gamma = event.gamma;
+      if (gamma === null) return;
 
-      // How far the phone is tilted back from upright (90°)
-      let tiltFromUpright = Math.max(0, 90 - beta);
+      // Use absolute value of left tilt (negative gamma = tilt left)
+      let tiltLeft = Math.max(0, -gamma);
 
       // Smooth interpolation to prevent jitter
-      lastTiltAngle = lastTiltAngle * 0.7 + tiltFromUpright * 0.3;
+      lastTiltAngle = lastTiltAngle * 0.7 + tiltLeft * 0.3;
 
-      // Expand when tilted back beyond threshold, collapse when upright
+      // Expand when tilted left beyond threshold, collapse when upright
       if (lastTiltAngle > tiltThreshold) {
         cardsSection.classList.add('expanded');
       } else {
@@ -878,19 +1055,31 @@
       requestPermission();
     }
 
-    function navigateToWeather() {
-      // In a real app, this would navigate to the weather detail screen
+    const calendarScreen = document.getElementById('calendar-screen');
+    const weatherScreen = document.getElementById('weather-screen');
+    const weatherDateLabel = document.getElementById('weather-date-label');
+    const weatherDayTitle = document.querySelector('.weather-section .header');
+    const weatherDateInfo = document.querySelector('.date-info span');
+
+    function navigateToWeather(day, date) {
+      weatherDateLabel.textContent = date.replace('April ', 'Apr ');
+      weatherDayTitle.textContent = day + "'s Weather";
+      weatherDateInfo.textContent = day + ', ' + date + ', 2026';
+      calendarScreen.classList.remove('active');
+      weatherScreen.classList.add('active');
     }
 
-    function navigateBack() {
-      // In a real app, this would navigate back to the calendar screen
+    function navigateBack(e) {
+      if (e) e.preventDefault();
+      weatherScreen.classList.remove('active');
+      calendarScreen.classList.add('active');
     }
 
-    // For testing on desktop - use arrow keys
+    // For testing on desktop - use arrow keys (← expand, → collapse)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowUp') {
+      if (e.key === 'ArrowLeft') {
         cardsSection.classList.add('expanded');
-      } else if (e.key === 'ArrowDown') {
+      } else if (e.key === 'ArrowRight') {
         cardsSection.classList.remove('expanded');
       }
     });
