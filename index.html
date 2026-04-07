@@ -121,43 +121,6 @@
       transform-origin: center top;
     }
 
-    /* Cards expand state - triggered by device tilt */
-    .cards-section.expanded .day-card {
-      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .cards-section.expanded .today {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .cards-section.expanded .tuesday {
-      transform: translateY(160px);
-    }
-
-    .cards-section.expanded .wednesday {
-      transform: translateY(300px);
-    }
-
-    .cards-section.expanded .thursday {
-      transform: translateY(430px);
-    }
-
-    .cards-section.expanded .friday {
-      transform: translateY(550px);
-    }
-
-    .cards-section.expanded .saturday {
-      transform: translateY(665px);
-    }
-
-    .cards-section.expanded .sunday {
-      transform: translateY(785px);
-    }
-
-    .cards-section.expanded .next-monday {
-      transform: translateY(895px);
-    }
 
     .day-card .day-label {
       letter-spacing: 0.5px;
@@ -649,84 +612,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* History Section */
-    .history-section {
-      padding: 32px 24px 40px;
-    }
-
-    .history-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      color: rgba(0, 0, 0, 0.3);
-      margin-bottom: 16px;
-    }
-
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .history-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 18px;
-      background: #fff;
-      cursor: pointer;
-    }
-
-    .history-item:active {
-      background: #f5f5f5;
-    }
-
-    .history-item .history-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .history-item .history-date-num {
-      font-size: 22px;
-      font-weight: 300;
-      color: #000;
-      width: 32px;
-      text-align: center;
-    }
-
-    .history-item .history-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .history-item .history-day {
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-    }
-
-    .history-item .history-month {
-      font-size: 12px;
-      color: rgba(0, 0, 0, 0.35);
-    }
-
-    .history-item .history-weather {
-      font-size: 13px;
-      color: rgba(0, 0, 0, 0.4);
-    }
-
-    .history-item .history-dot {
-      width: 5px;
-      height: 5px;
-      background: rgba(0, 0, 0, 0.15);
-      border-radius: 50%;
-      margin-left: 8px;
-    }
 
     /* Gyro permission banner */
     .gyro-banner {
@@ -844,82 +729,6 @@
           </div>
         </div>
 
-        <!-- History -->
-        <div class="history-section">
-          <span class="history-title">PAST DAYS</span>
-          <div class="history-list">
-            <div class="history-item" onclick="navigateToWeather('Sunday', 'April 5')">
-              <div class="history-left">
-                <span class="history-date-num">5</span>
-                <div class="history-info">
-                  <span class="history-day">Sunday</span>
-                  <span class="history-month">April 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">18° Sunny</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Saturday', 'April 4')">
-              <div class="history-left">
-                <span class="history-date-num">4</span>
-                <div class="history-info">
-                  <span class="history-day">Saturday</span>
-                  <span class="history-month">April 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">16° Cloudy</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Friday', 'April 3')">
-              <div class="history-left">
-                <span class="history-date-num">3</span>
-                <div class="history-info">
-                  <span class="history-day">Friday</span>
-                  <span class="history-month">April 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">14° Rain</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Thursday', 'April 2')">
-              <div class="history-left">
-                <span class="history-date-num">2</span>
-                <div class="history-info">
-                  <span class="history-day">Thursday</span>
-                  <span class="history-month">April 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">15° Overcast</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Wednesday', 'April 1')">
-              <div class="history-left">
-                <span class="history-date-num">1</span>
-                <div class="history-info">
-                  <span class="history-day">Wednesday</span>
-                  <span class="history-month">April 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">13° Drizzle</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Tuesday', 'March 31')">
-              <div class="history-left">
-                <span class="history-date-num">31</span>
-                <div class="history-info">
-                  <span class="history-day">Tuesday</span>
-                  <span class="history-month">March 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">12° Cloudy</span>
-            </div>
-            <div class="history-item" onclick="navigateToWeather('Monday', 'March 30')">
-              <div class="history-left">
-                <span class="history-date-num">30</span>
-                <div class="history-info">
-                  <span class="history-day">Monday</span>
-                  <span class="history-month">March 2026</span>
-                </div>
-              </div>
-              <span class="history-weather">11° Sunny</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -1032,45 +841,51 @@
     let lastTiltAngle = 0;
     const tiltThreshold = 10; // start expanding at ~10° left tilt
 
-    // Card default positions (top values from CSS) and stacked targets
+    // Card positions: default (top from CSS), stacked (scroll down), expanded (tilt)
     const cards = [
-      { sel: '.today',       top: 0,   stackY: 0,   scaleMin: 1 },
-      { sel: '.tuesday',     top: 120, stackY: 25,  scaleMin: 0.97 },
-      { sel: '.wednesday',   top: 220, stackY: 45,  scaleMin: 0.94 },
-      { sel: '.thursday',    top: 310, stackY: 60,  scaleMin: 0.91 },
-      { sel: '.friday',      top: 390, stackY: 72,  scaleMin: 0.88 },
-      { sel: '.saturday',    top: 460, stackY: 82,  scaleMin: 0.85 },
-      { sel: '.sunday',      top: 520, stackY: 90,  scaleMin: 0.82 },
-      { sel: '.next-monday', top: 570, stackY: 96,  scaleMin: 0.79 },
+      { sel: '.today',       top: 0,   stackY: 0,   expandY: 0,   scaleMin: 1 },
+      { sel: '.tuesday',     top: 120, stackY: 25,  expandY: 160, scaleMin: 0.97 },
+      { sel: '.wednesday',   top: 220, stackY: 45,  expandY: 300, scaleMin: 0.94 },
+      { sel: '.thursday',    top: 310, stackY: 60,  expandY: 430, scaleMin: 0.91 },
+      { sel: '.friday',      top: 390, stackY: 72,  expandY: 550, scaleMin: 0.88 },
+      { sel: '.saturday',    top: 460, stackY: 82,  expandY: 665, scaleMin: 0.85 },
+      { sel: '.sunday',      top: 520, stackY: 90,  expandY: 785, scaleMin: 0.82 },
+      { sel: '.next-monday', top: 570, stackY: 96,  expandY: 895, scaleMin: 0.79 },
     ];
     const cardEls = cards.map(c => ({ ...c, el: document.querySelector(c.sel) }));
+    let currentExpandRatio = 0; // 0 = normal, 1 = fully expanded by tilt
 
-    function updateCardsOnScroll() {
-      if (cardsSection.classList.contains('expanded')) return;
+    function updateCards() {
       const scrollY = scrollArea.scrollTop;
       const maxScroll = 300;
-      const t = Math.min(1, scrollY / maxScroll);
+      const scrollT = Math.min(1, scrollY / maxScroll); // 0=top, 1=scrolled
+      const tiltT = currentExpandRatio; // 0=upright, 1=fully tilted
 
       cardEls.forEach((c, i) => {
         if (i === 0) {
-          c.el.style.transform = `translateY(0)`;
+          c.el.style.transform = 'translateY(0)';
           c.el.style.opacity = 1;
           return;
         }
-        const y = c.top * (1 - t) + c.stackY * t;
-        const s = 1 * (1 - t) + c.scaleMin * t;
-        const o = 1 - t * (i * 0.06);
+        // Blend: scroll stacks cards, tilt expands them
+        // When tilt > 0, interpolate from current position toward expandY
+        const scrollY_pos = c.top * (1 - scrollT) + c.stackY * scrollT;
+        const y = scrollY_pos * (1 - tiltT) + c.expandY * tiltT;
+        const scrollScale = 1 * (1 - scrollT) + c.scaleMin * scrollT;
+        const s = scrollScale * (1 - tiltT) + 1 * tiltT;
+        const scrollO = 1 - scrollT * (i * 0.06);
+        const o = Math.max(0.4, scrollO) * (1 - tiltT) + 1 * tiltT;
         c.el.style.transform = `translateY(${y}px) scale(${s})`;
-        c.el.style.opacity = Math.max(0.4, o);
+        c.el.style.opacity = o;
       });
     }
 
     scrollArea.addEventListener('scroll', () => {
-      requestAnimationFrame(updateCardsOnScroll);
+      requestAnimationFrame(updateCards);
     });
 
     // Set initial state
-    updateCardsOnScroll();
+    updateCards();
 
     // Gyroscope permission
     let gyroEnabled = false;
@@ -1092,30 +907,18 @@
     }
 
     function handleDeviceOrientation(event) {
-      // gamma: -90 to 90 (tilt left/right)
-      // Tilt left → gamma negative, tilt right → gamma positive
       const gamma = event.gamma;
       if (gamma === null) return;
 
-      // Use absolute value of left tilt (negative gamma = tilt left)
+      // Left tilt = negative gamma → positive value
       let tiltLeft = Math.max(0, -gamma);
 
       // Smooth interpolation to prevent jitter
       lastTiltAngle = lastTiltAngle * 0.7 + tiltLeft * 0.3;
 
-      // Expand when tilted left beyond threshold, collapse when upright
-      if (lastTiltAngle > tiltThreshold) {
-        cardsSection.classList.add('expanded');
-        // Clear scroll-based inline styles so CSS expanded rules take over
-        cardEls.forEach(c => { c.el.style.transform = ''; c.el.style.opacity = ''; });
-      } else {
-        cardsSection.classList.remove('expanded');
-        updateCardsOnScroll();
-      }
-
-      // Continuous ratio: 0 at threshold, 1 at ~60°
-      const expandRatio = Math.min(1, Math.max(0, (lastTiltAngle - tiltThreshold) / 50));
-      cardsSection.style.setProperty('--expand-ratio', expandRatio);
+      // Continuous expand ratio: 0 at threshold (~10°), 1 at ~60°
+      currentExpandRatio = Math.min(1, Math.max(0, (lastTiltAngle - tiltThreshold) / 50));
+      requestAnimationFrame(updateCards);
     }
 
     // Initialize gyroscope
@@ -1147,15 +950,28 @@
       calendarScreen.classList.add('active');
     }
 
-    // For testing on desktop - use arrow keys (← expand, → collapse)
+    // Desktop testing: ← gradually expand, → gradually collapse
+    let keyTiltTarget = 0;
+    let keyTiltAnim = null;
+    function animateKeyTilt() {
+      const diff = keyTiltTarget - currentExpandRatio;
+      if (Math.abs(diff) < 0.005) {
+        currentExpandRatio = keyTiltTarget;
+        updateCards();
+        keyTiltAnim = null;
+        return;
+      }
+      currentExpandRatio += diff * 0.08;
+      updateCards();
+      keyTiltAnim = requestAnimationFrame(animateKeyTilt);
+    }
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
-        cardsSection.classList.add('expanded');
-        cardEls.forEach(c => { c.el.style.transform = ''; c.el.style.opacity = ''; });
+        keyTiltTarget = 1;
       } else if (e.key === 'ArrowRight') {
-        cardsSection.classList.remove('expanded');
-        updateCardsOnScroll();
-      }
+        keyTiltTarget = 0;
+      } else return;
+      if (!keyTiltAnim) keyTiltAnim = requestAnimationFrame(animateKeyTilt);
     });
   </script>
 </body>
