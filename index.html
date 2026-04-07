@@ -1068,6 +1068,22 @@
       weatherScreen.classList.remove('active');
     }
 
+    // Swipe left on weather screen to go back
+    let touchStartX = 0;
+    let touchStartY = 0;
+    weatherScreen.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    weatherScreen.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      // Right swipe (finger moves left to right) > 80px, mostly horizontal
+      if (dx > 80 && dy < 100) {
+        navigateBack();
+      }
+    }, { passive: true });
+
     // Page load animation: cards cascade in from below
     (function loadAnimation() {
       // Start hidden
