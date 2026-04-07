@@ -175,6 +175,7 @@
       right: 20px;
       width: auto;
       height: 150px;
+      z-index: 80;
       padding: 28px;
       gap: 8px;
       border-radius: 20px;
@@ -300,6 +301,7 @@
       right: 22px;
       width: auto;
       height: 130px;
+      z-index: 70;
       padding: 24px;
       gap: 6px;
       border: 1px solid rgba(0, 0, 0, 0.024);
@@ -313,6 +315,7 @@
       right: 24px;
       width: auto;
       height: 120px;
+      z-index: 60;
       padding: 20px 24px;
       gap: 4px;
       border: 1px solid rgba(0, 0, 0, 0.024);
@@ -326,6 +329,7 @@
       right: 26px;
       width: auto;
       height: 120px;
+      z-index: 50;
       padding: 20px 24px;
       gap: 4px;
       border: 1px solid rgba(0, 0, 0, 0.02);
@@ -339,6 +343,7 @@
       right: 28px;
       width: auto;
       height: 115px;
+      z-index: 40;
       padding: 20px 24px;
       gap: 4px;
       border: 1px solid rgba(0, 0, 0, 0.02);
@@ -352,6 +357,7 @@
       right: 30px;
       width: auto;
       height: 110px;
+      z-index: 30;
       padding: 20px 24px;
       gap: 4px;
       background: #FCFCFC;
@@ -366,6 +372,7 @@
       right: 32px;
       width: auto;
       height: 110px;
+      z-index: 20;
       padding: 20px 24px;
       gap: 4px;
       background: #FAFAFA;
@@ -380,6 +387,7 @@
       right: 34px;
       width: auto;
       height: 110px;
+      z-index: 10;
       padding: 20px 24px;
       gap: 4px;
       background: #F7F7F7;
@@ -720,6 +728,34 @@
       margin-left: 8px;
     }
 
+    /* Gyro permission banner */
+    .gyro-banner {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      margin: 0 20px 12px;
+      background: #f5f5f5;
+      border-radius: 12px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .gyro-banner.show {
+      display: flex;
+    }
+
+    .gyro-banner span {
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .gyro-banner .gyro-icon {
+      font-size: 16px;
+    }
+
     /* Screen switching */
     .screen {
       display: none;
@@ -756,6 +792,10 @@
           </div>
           <span class="subtitle">Your Schedule</span>
         </div>
+      </div>
+      <div class="gyro-banner" id="gyro-banner" onclick="requestGyroPermission()">
+        <span class="gyro-icon">📱</span>
+        <span>点击启用倾斜交互</span>
       </div>
       <div class="scroll-area">
         <div class="cards-section">
@@ -990,7 +1030,7 @@
     const cardsSection = document.querySelector('.cards-section');
     const scrollArea = document.querySelector('.scroll-area');
     let lastTiltAngle = 0;
-    const tiltThreshold = 15;
+    const tiltThreshold = 10; // start expanding at ~10° left tilt
 
     // Card default positions (top values from CSS) and stacked targets
     const cards = [
@@ -1032,25 +1072,23 @@
     // Set initial state
     updateCardsOnScroll();
 
-    // Request gyroscope permission
+    // Gyroscope permission
     let gyroEnabled = false;
-    function enableGyro() {
-      if (gyroEnabled) return;
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ requires user gesture to request permission
-        DeviceOrientationEvent.requestPermission()
-          .then(permissionState => {
-            if (permissionState === 'granted') {
-              gyroEnabled = true;
-              window.addEventListener('deviceorientation', handleDeviceOrientation);
-            }
-          })
-          .catch(console.error);
-      } else if (window.DeviceOrientationEvent) {
-        // Android and older iOS
-        gyroEnabled = true;
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-      }
+    const gyroBanner = document.getElementById('gyro-banner');
+    const needsIOSPermission = typeof DeviceOrientationEvent !== 'undefined'
+      && typeof DeviceOrientationEvent.requestPermission === 'function';
+
+    function startGyro() {
+      gyroEnabled = true;
+      gyroBanner.classList.remove('show');
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+
+    // iOS 13+: must be called from a user click/tap handler
+    function requestGyroPermission() {
+      DeviceOrientationEvent.requestPermission()
+        .then(state => { if (state === 'granted') startGyro(); })
+        .catch(console.error);
     }
 
     function handleDeviceOrientation(event) {
@@ -1075,16 +1113,19 @@
         updateCardsOnScroll();
       }
 
-      // Continuous ratio for smooth visual feedback
-      const expandRatio = Math.min(1, Math.max(0, (lastTiltAngle - tiltThreshold) / 25));
+      // Continuous ratio: 0 at threshold, 1 at ~60°
+      const expandRatio = Math.min(1, Math.max(0, (lastTiltAngle - tiltThreshold) / 50));
       cardsSection.style.setProperty('--expand-ratio', expandRatio);
     }
 
-    // Enable gyroscope on first user touch (required by iOS)
-    document.addEventListener('touchstart', enableGyro, { once: true });
-    document.addEventListener('click', enableGyro, { once: true });
-    // Also try immediately for Android
-    enableGyro();
+    // Initialize gyroscope
+    if (needsIOSPermission) {
+      // iOS: show banner, wait for user tap
+      gyroBanner.classList.add('show');
+    } else if (window.DeviceOrientationEvent) {
+      // Android: enable directly
+      startGyro();
+    }
 
     const calendarScreen = document.getElementById('calendar-screen');
     const weatherScreen = document.getElementById('weather-screen');
