@@ -590,6 +590,17 @@
       color: #222;
       letter-spacing: -0.2px;
       line-height: 1.45;
+      min-height: 52px;
+    }
+
+    .quote-text.typing::after {
+      content: '|';
+      animation: blink 0.6s step-end infinite;
+      color: rgba(0,0,0,0.4);
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
     }
 
     .author-row {
@@ -811,26 +822,26 @@
       <div class="weather-content">
       <!-- Weather Section -->
       <div class="weather-section">
-        <span class="header">Today's Weather</span>
+        <span class="header" id="weather-title">Today's Weather</span>
         <div class="weather-info">
-          <i class="icon-lucide-cloud-sun weather-icon"></i>
+          <i class="weather-icon" id="weather-icon"></i>
           <div class="temp-stack">
-            <span class="temp">22°</span>
-            <span class="cond">Partly Cloudy, Breezy</span>
+            <span class="temp" id="weather-temp">22°</span>
+            <span class="cond" id="weather-cond">Partly Cloudy, Breezy</span>
           </div>
         </div>
         <div class="stat-row">
           <div class="stat-card">
             <span class="label">Wind</span>
-            <span class="value">12 km/h</span>
+            <span class="value" id="stat-wind">12 km/h</span>
           </div>
           <div class="stat-card">
             <span class="label">Humidity</span>
-            <span class="value">65%</span>
+            <span class="value" id="stat-humidity">65%</span>
           </div>
           <div class="stat-card">
             <span class="label">UV Index</span>
-            <span class="value">4</span>
+            <span class="value" id="stat-uv">4</span>
           </div>
         </div>
         <!-- Temperature Chart -->
@@ -885,10 +896,10 @@
         </div>
         <div class="quote-card">
           <span class="open-quote">"</span>
-          <p class="quote-text">Between the clouds, the sun always finds a way through — so do you.</p>
+          <p class="quote-text" id="quote-text"></p>
           <div class="author-row">
             <span class="dash"></span>
-            <span class="author">April Breeze</span>
+            <span class="author" id="quote-author"></span>
           </div>
         </div>
         <div class="date-info">
@@ -991,18 +1002,69 @@
     const calendarScreen = document.getElementById('calendar-screen');
     const weatherScreen = document.getElementById('weather-screen');
     const weatherDateLabel = document.getElementById('weather-date-label');
-    const weatherDayTitle = document.querySelector('.weather-section .header');
+    const weatherTitle = document.getElementById('weather-title');
     const weatherDateInfo = document.querySelector('.date-info span');
+    const weatherIcon = document.getElementById('weather-icon');
+    const weatherTemp = document.getElementById('weather-temp');
+    const weatherCond = document.getElementById('weather-cond');
+    const statWind = document.getElementById('stat-wind');
+    const statHumidity = document.getElementById('stat-humidity');
+    const statUv = document.getElementById('stat-uv');
+    const quoteText = document.getElementById('quote-text');
+    const quoteAuthor = document.getElementById('quote-author');
+
+    // Weather data per day
+    const weatherData = {
+      'April 6':  { icon: 'icon-lucide-cloud-sun',    temp: '22°', cond: 'Partly Cloudy, Breezy', wind: '12 km/h', humidity: '65%', uv: '4', quote: 'Between the clouds, the sun always finds a way through — so do you.', author: 'April Breeze' },
+      'April 7':  { icon: 'icon-lucide-sun',           temp: '25°', cond: 'Clear Sky, Warm',       wind: '8 km/h',  humidity: '45%', uv: '7', quote: 'A sunny day is the universe smiling back at you.', author: 'Sol Bright' },
+      'April 8':  { icon: 'icon-lucide-cloud',         temp: '20°', cond: 'Overcast, Mild',        wind: '15 km/h', humidity: '72%', uv: '2', quote: 'Even grey skies hold the promise of tomorrow\'s blue.', author: 'Cloud Walker' },
+      'April 9':  { icon: 'icon-lucide-cloud-rain',    temp: '17°', cond: 'Light Rain, Cool',      wind: '20 km/h', humidity: '85%', uv: '1', quote: 'Rain teaches patience; each drop is a moment to pause.', author: 'Rain Song' },
+      'April 10': { icon: 'icon-lucide-cloud-drizzle', temp: '16°', cond: 'Drizzle, Damp',         wind: '18 km/h', humidity: '88%', uv: '1', quote: 'The softest rain nourishes the deepest roots.', author: 'Mist Garden' },
+      'April 11': { icon: 'icon-lucide-sun',           temp: '24°', cond: 'Sunny, Pleasant',       wind: '6 km/h',  humidity: '40%', uv: '6', quote: 'Let the warmth remind you that light always returns.', author: 'Golden Hour' },
+      'April 12': { icon: 'icon-lucide-cloud-sun',     temp: '21°', cond: 'Partly Cloudy',         wind: '10 km/h', humidity: '58%', uv: '3', quote: 'The best views come after the hardest climbs — and clearest skies.', author: 'Sky Poet' },
+      'April 13': { icon: 'icon-lucide-cloud',         temp: '19°', cond: 'Cloudy, Calm',          wind: '9 km/h',  humidity: '68%', uv: '2', quote: 'A new week begins; carry only what moves you forward.', author: 'Monday Muse' },
+    };
+
+    let typewriterTimer = null;
+
+    function typewriterEffect(element, text, speed) {
+      if (typewriterTimer) clearInterval(typewriterTimer);
+      element.textContent = '';
+      element.classList.add('typing');
+      let i = 0;
+      typewriterTimer = setInterval(() => {
+        element.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(typewriterTimer);
+          typewriterTimer = null;
+          element.classList.remove('typing');
+        }
+      }, speed);
+    }
 
     function navigateToWeather(day, date) {
+      const data = weatherData[date] || weatherData['April 6'];
       weatherDateLabel.textContent = date.replace('April ', 'Apr ');
-      weatherDayTitle.textContent = day + "'s Weather";
+      weatherTitle.textContent = day + "'s Weather";
       weatherDateInfo.textContent = day + ', ' + date + ', 2026';
+      weatherIcon.className = 'weather-icon ' + data.icon;
+      weatherTemp.textContent = data.temp;
+      weatherCond.textContent = data.cond;
+      statWind.textContent = data.wind;
+      statHumidity.textContent = data.humidity;
+      statUv.textContent = data.uv;
+      quoteAuthor.textContent = data.author;
       weatherScreen.classList.add('active');
+      // Start typewriter after slide-in transition
+      setTimeout(() => {
+        typewriterEffect(quoteText, data.quote, 30);
+      }, 400);
     }
 
     function navigateBack(e) {
       if (e) e.preventDefault();
+      if (typewriterTimer) { clearInterval(typewriterTimer); typewriterTimer = null; }
       weatherScreen.classList.remove('active');
     }
 
