@@ -1,1 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar & Weather App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    /* Phone Frame */
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: #ffffff;
+      border-radius: 40px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      width: 100%;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+    }
+
+    .status-bar .time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    /* ==================== */
+    /* Calendar Screen       */
+    /* ==================== */
+    .calendar-header {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .calendar-header .content-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 20px 24px 32px 24px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .month-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .title-row .icon-lucide-chevron-left,
+    .title-row .icon-lucide-chevron-right {
+      font-size: 22px;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .cards-section {
+      flex: 1;
+      position: relative;
+      width: 390px;
+      overflow: hidden;
+    }
+
+    .day-card {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.1s ease-out;
+    }
+
+    .day-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Cards expand state - triggered by device tilt */
+    .cards-section.expanded .day-card {
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .cards-section.expanded .today {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cards-section.expanded .tuesday {
+      transform: translateY(160px);
+    }
+
+    .cards-section.expanded .wednesday {
+      transform: translateY(300px);
+    }
+
+    .cards-section.expanded .thursday {
+      transform: translateY(430px);
+    }
+
+    .cards-section.expanded .friday {
+      transform: translateY(550px);
+    }
+
+    .cards-section.expanded .saturday {
+      transform: translateY(665px);
+    }
+
+    .cards-section.expanded .sunday {
+      transform: translateY(785px);
+    }
+
+    .cards-section.expanded .next-monday {
+      transform: translateY(895px);
+    }
+
+    .day-card .day-label {
+      letter-spacing: 0.5px;
+    }
+
+    .day-card .date-label {
+      font-weight: 300;
+      letter-spacing: -0.5px;
+    }
+
+    /* Today Card */
+    .day-card.today {
+      top: 0;
+      left: 20px;
+      width: 350px;
+      height: 150px;
+      padding: 28px;
+      gap: 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.03);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.094), 0 1px 3px rgba(0, 0, 0, 0.063);
+    }
+
+    /* Collapsed state: cards stack tightly */
+    .cards-section:not(.expanded) .tuesday {
+      transform: translateY(25px);
+    }
+
+    .cards-section:not(.expanded) .wednesday {
+      transform: translateY(45px);
+    }
+
+    .cards-section:not(.expanded) .thursday {
+      transform: translateY(65px);
+    }
+
+    .cards-section:not(.expanded) .friday {
+      transform: translateY(80px);
+    }
+
+    .cards-section:not(.expanded) .saturday {
+      transform: translateY(95px);
+    }
+
+    .cards-section:not(.expanded) .sunday {
+      transform: translateY(105px);
+    }
+
+    .cards-section:not(.expanded) .next-monday {
+      transform: translateY(115px);
+    }
+
+    .today .day-label {
+      font-size: 15px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    .today .date-label {
+      font-size: 36px;
+      font-weight: 200;
+      color: #000;
+      letter-spacing: -1px;
+    }
+
+    .tuesday .day-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .tuesday .date-label {
+      font-size: 30px;
+      color: #000;
+    }
+
+    .tuesday .dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #000;
+      border-radius: 50%;
+      right: 24px;
+      top: 22px;
+    }
+
+    .wednesday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    .wednesday .date-label {
+      font-size: 26px;
+      color: #333;
+    }
+
+    .thursday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .thursday .date-label {
+      font-size: 24px;
+      color: #444;
+    }
+
+    .thursday .dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #999;
+      border-radius: 50%;
+      right: 24px;
+      top: 20px;
+    }
+
+    .friday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+    }
+
+    .friday .date-label {
+      font-size: 22px;
+      color: #555;
+    }
+
+    .saturday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #777;
+    }
+
+    .saturday .date-label {
+      font-size: 20px;
+      color: #666;
+    }
+
+    .sunday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #888;
+    }
+
+    .sunday .date-label {
+      font-size: 18px;
+      color: #777;
+    }
+
+    .next-monday .day-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #999;
+    }
+
+    .next-monday .date-label {
+      font-size: 16px;
+      color: #888;
+    }
+
+    /* Tuesday */
+    .day-card.tuesday {
+      top: 120px;
+      left: 22px;
+      width: 346px;
+      height: 130px;
+      padding: 24px;
+      gap: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.024);
+      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.086), 0 1px 2px rgba(0, 0, 0, 0.051);
+    }
+
+    /* Wednesday */
+    .day-card.wednesday {
+      top: 220px;
+      left: 24px;
+      width: 342px;
+      height: 120px;
+      padding: 20px 24px;
+      gap: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.024);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.078), 0 1px 2px rgba(0, 0, 0, 0.039);
+    }
+
+    /* Thursday */
+    .day-card.thursday {
+      top: 310px;
+      left: 26px;
+      width: 338px;
+      height: 120px;
+      padding: 20px 24px;
+      gap: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.031);
+    }
+
+    /* Friday */
+    .day-card.friday {
+      top: 390px;
+      left: 28px;
+      width: 334px;
+      height: 115px;
+      padding: 20px 24px;
+      gap: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.063), 0 1px 2px rgba(0, 0, 0, 0.031);
+    }
+
+    /* Saturday */
+    .day-card.saturday {
+      top: 460px;
+      left: 30px;
+      width: 330px;
+      height: 110px;
+      padding: 20px 24px;
+      gap: 4px;
+      background: #FCFCFC;
+      border: 1px solid rgba(0, 0, 0, 0.016);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.051), 0 1px 1px rgba(0, 0, 0, 0.024);
+    }
+
+    /* Sunday */
+    .day-card.sunday {
+      top: 520px;
+      left: 32px;
+      width: 326px;
+      height: 110px;
+      padding: 20px 24px;
+      gap: 4px;
+      background: #FAFAFA;
+      border: 1px solid rgba(0, 0, 0, 0.016);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.039);
+    }
+
+    /* Monday (next week) */
+    .day-card.next-monday {
+      top: 570px;
+      left: 34px;
+      width: 322px;
+      height: 110px;
+      padding: 20px 24px;
+      gap: 4px;
+      background: #F7F7F7;
+      border: 1px solid rgba(0, 0, 0, 0.012);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.031);
+    }
+
+    /* ==================== */
+    /* Weather Detail Screen */
+    /* ==================== */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 24px;
+      width: 100%;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .back-btn .icon-lucide-chevron-left {
+      font-size: 20px;
+    }
+
+    .back-btn span {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .top-nav .date-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .weather-content {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      flex: 1;
+      padding: 12px 28px 32px 28px;
+      overflow-y: auto;
+    }
+
+    /* Weather Section */
+    .weather-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 20px;
+    }
+
+    .weather-section .header {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000;
+      text-align: center;
+    }
+
+    .weather-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .weather-icon {
+      font-size: 48px;
+      color: #000;
+    }
+
+    .temp-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .temp-stack .temp {
+      font-size: 48px;
+      font-weight: 200;
+      color: #000;
+    }
+
+    .temp-stack .cond {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Stat Cards */
+    .stat-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .stat-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 12px;
+      background: #F5F5F5;
+      border-radius: 12px;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-card .value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #000;
+    }
+
+    /* Temperature Chart */
+    .temp-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #F8F8F8;
+      border-radius: 16px;
+      padding: 16px 16px 12px 16px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.031);
+    }
+
+    .chart-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.4);
+      letter-spacing: 1px;
+    }
+
+    .chart-area {
+      position: relative;
+      width: 100%;
+      height: 120px;
+    }
+
+    .chart-area svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .time-labels {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .time-labels span {
+      font-size: 10px;
+      color: rgba(0, 0, 0, 0.25);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .time-labels span.active {
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* Quote Section */
+    .quote-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-top: 12px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.063);
+    }
+
+    .quote-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quote-header .icon-lucide-cloud-sun {
+      font-size: 18px;
+      color: #000;
+    }
+
+    .quote-header span {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: #000;
+    }
+
+    .quote-card {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: #F8F8F8;
+      border-radius: 16px;
+      padding: 16px 20px 20px 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.039);
+    }
+
+    .open-quote {
+      font-size: 36px;
+      color: rgba(0, 0, 0, 0.082);
+      line-height: 0.8;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .quote-text {
+      font-size: 18px;
+      font-weight: 300;
+      color: #222;
+      letter-spacing: -0.2px;
+      line-height: 1.45;
+    }
+
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .author-row .dash {
+      width: 16px;
+      height: 1px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .author-row .author {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .date-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 4px;
+    }
+
+    .date-info span {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.5px;
+    }
+
+    /* Icon font fallback using text */
+    .nav-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Calendar Screen -->
+  <div class="phone">
+    <div class="calendar-header">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+      </div>
+      <div class="content-wrap">
+        <div class="title-row">
+          <span class="month-title">April 2026</span>
+          <i class="icon-lucide-chevron-left"></i>
+          <i class="icon-lucide-chevron-right"></i>
+        </div>
+        <span class="subtitle">Your Schedule</span>
+      </div>
+    </div>
+    <div class="cards-section">
+      <!-- Today -->
+      <div class="day-card today" onclick="navigateToWeather()">
+        <span class="today-badge">TODAY</span>
+        <span class="day-label">Monday</span>
+        <span class="date-label">April 6</span>
+      </div>
+      <!-- Tuesday -->
+      <div class="day-card tuesday">
+        <span class="day-label">Tue.</span>
+        <span class="date-label">April 7</span>
+        <span class="dot"></span>
+      </div>
+      <!-- Wednesday -->
+      <div class="day-card wednesday">
+        <span class="day-label">Wed.</span>
+        <span class="date-label">April 8</span>
+      </div>
+      <!-- Thursday -->
+      <div class="day-card thursday">
+        <span class="day-label">Thu.</span>
+        <span class="date-label">April 9</span>
+        <span class="dot"></span>
+      </div>
+      <!-- Friday -->
+      <div class="day-card friday">
+        <span class="day-label">Fri.</span>
+        <span class="date-label">April 10</span>
+      </div>
+      <!-- Saturday -->
+      <div class="day-card saturday">
+        <span class="day-label">Sat.</span>
+        <span class="date-label">April 11</span>
+      </div>
+      <!-- Sunday -->
+      <div class="day-card sunday">
+        <span class="day-label">Sun.</span>
+        <span class="date-label">April 12</span>
+      </div>
+      <!-- Next Monday -->
+      <div class="day-card next-monday">
+        <span class="day-label">Mon.</span>
+        <span class="date-label">April 13</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weather Detail Screen -->
+  <div class="phone">
+    <div class="status-bar">
+      <span class="time">9:41</span>
+    </div>
+    <div class="top-nav">
+      <a class="back-btn" href="#" onclick="navigateBack()">
+        <i class="icon-lucide-chevron-left"></i>
+        <span>Back</span>
+      </a>
+      <span class="date-label">Apr 6</span>
+    </div>
+    <div class="weather-content">
+      <!-- Weather Section -->
+      <div class="weather-section">
+        <span class="header">Today's Weather</span>
+        <div class="weather-info">
+          <i class="icon-lucide-cloud-sun weather-icon"></i>
+          <div class="temp-stack">
+            <span class="temp">22°</span>
+            <span class="cond">Partly Cloudy, Breezy</span>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-card">
+            <span class="label">Wind</span>
+            <span class="value">12 km/h</span>
+          </div>
+          <div class="stat-card">
+            <span class="label">Humidity</span>
+            <span class="value">65%</span>
+          </div>
+          <div class="stat-card">
+            <span class="label">UV Index</span>
+            <span class="value">4</span>
+          </div>
+        </div>
+        <!-- Temperature Chart -->
+        <div class="temp-chart">
+          <span class="chart-title">Temperature Trend</span>
+          <div class="chart-area">
+            <svg viewBox="0 0 302 120" preserveAspectRatio="none" fill="none">
+              <!-- Gradient fill -->
+              <defs>
+                <linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="rgba(0,0,0,0.03)" />
+                  <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+                </linearGradient>
+              </defs>
+              <path d="M0 90c20-5 35-15 50-25 15-10 30-25 50-30 20-5 40-13 51-17 11-4 29-6 49 0 20 6 40 22 60 37 20 15 35 27 42 33L302 120H0z" fill="url(#tempGrad)" />
+              <path d="M0 90c20-5 35-15 50-25 15-10 30-25 50-30 20-5 40-13 51-17 11-4 29-6 49 0 20 6 40 22 60 37 20 15 35 27 42 33" stroke="#000" stroke-width="2" fill="none" />
+              <!-- Dots -->
+              <circle cx="0" cy="90" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <circle cx="50" cy="65" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <circle cx="100" cy="35" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <circle cx="151" cy="17" r="5" fill="#000" stroke="#000" stroke-width="2" />
+              <circle cx="200" cy="18" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <circle cx="260" cy="55" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <circle cx="302" cy="88" r="4" fill="white" stroke="#000" stroke-width="2" />
+              <!-- Temperature labels -->
+              <text x="0" y="80" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">16°</text>
+              <text x="44" y="55" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">19°</text>
+              <text x="94" y="25" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">21°</text>
+              <text x="143" y="8" font-family="Inter" font-size="11" font-weight="700" fill="#000">22°</text>
+              <text x="194" y="10" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">21°</text>
+              <text x="253" y="45" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">18°</text>
+              <text x="293" y="78" font-family="Inter" font-size="10" font-weight="500" fill="rgba(0,0,0,0.4)">15°</text>
+            </svg>
+          </div>
+          <div class="time-labels">
+            <span>6AM</span>
+            <span>9AM</span>
+            <span>12PM</span>
+            <span class="active">3PM</span>
+            <span>6PM</span>
+            <span>9PM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote Section -->
+      <div class="quote-section">
+        <div class="divider"></div>
+        <div class="quote-header">
+          <i class="icon-lucide-cloud-sun"></i>
+          <span>Weather Wisdom</span>
+        </div>
+        <div class="quote-card">
+          <span class="open-quote">"</span>
+          <p class="quote-text">Between the clouds, the sun always finds a way through — so do you.</p>
+          <div class="author-row">
+            <span class="dash"></span>
+            <span class="author">April Breeze</span>
+          </div>
+        </div>
+        <div class="date-info">
+          <span>Monday, April 6, 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cardsSection = document.querySelector('.cards-section');
+    let lastTiltAngle = 0;
+    const tiltThreshold = 15; // degrees - threshold to trigger expansion
+
+    // Request permission for iOS 13+
+    function requestPermission() {
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              window.addEventListener('deviceorientation', handleDeviceOrientation);
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Non-iOS 13 devices
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    }
+
+    function handleDeviceOrientation(event) {
+      // beta: phone upright ≈ 90°, flat on table ≈ 0°
+      // gamma: -90 to 90 (tilt left/right)
+      const beta = event.beta;
+      if (beta === null) return;
+
+      // How far the phone is tilted back from upright (90°)
+      let tiltFromUpright = Math.max(0, 90 - beta);
+
+      // Smooth interpolation to prevent jitter
+      lastTiltAngle = lastTiltAngle * 0.7 + tiltFromUpright * 0.3;
+
+      // Expand when tilted back beyond threshold, collapse when upright
+      if (lastTiltAngle > tiltThreshold) {
+        cardsSection.classList.add('expanded');
+      } else {
+        cardsSection.classList.remove('expanded');
+      }
+
+      // Continuous ratio for smooth visual feedback
+      const expandRatio = Math.min(1, Math.max(0, (lastTiltAngle - tiltThreshold) / 25));
+      cardsSection.style.setProperty('--expand-ratio', expandRatio);
+    }
+
+    // Initialize device orientation
+    if (window.DeviceOrientationEvent) {
+      // Try to request permission first (iOS 13+)
+      requestPermission();
+    }
+
+    function navigateToWeather() {
+      // In a real app, this would navigate to the weather detail screen
+    }
+
+    function navigateBack() {
+      // In a real app, this would navigate back to the calendar screen
+    }
+
+    // For testing on desktop - use arrow keys
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp') {
+        cardsSection.classList.add('expanded');
+      } else if (e.key === 'ArrowDown') {
+        cardsSection.classList.remove('expanded');
+      }
+    });
+  </script>
+</body>
+</html>
