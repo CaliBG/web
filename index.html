@@ -153,11 +153,19 @@
     .day-card .card-weather .card-temp {
       font-size: 16px;
       font-weight: 300;
-      color: rgba(0,0,0,0.5);
+      color: rgba(255,255,255,0.7);
     }
 
     .day-card .card-weather .card-weather-icon {
       font-size: 16px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .day-card.tuesday .card-weather .card-temp {
+      color: rgba(0,0,0,0.5);
+    }
+
+    .day-card.tuesday .card-weather .card-weather-icon {
       color: rgba(0,0,0,0.4);
     }
 
@@ -182,11 +190,11 @@
       left: 16px;
       right: 16px;
       width: auto;
-      height: 150px;
+      height: 140px;
       z-index: 80;
-      padding: 28px;
-      gap: 8px;
-      border-radius: 20px;
+      padding: 24px 28px;
+      gap: 6px;
+      border-radius: 18px;
       background: #1a1a2e;
       color: #fff;
       border: none;
@@ -222,201 +230,142 @@
     .tuesday .day-label {
       font-size: 15px;
       font-weight: 600;
-      color: #222;
+      color: rgba(0,0,0,0.7);
     }
 
     .tuesday .date-label {
-      font-size: 30px;
+      font-size: 28px;
       color: #000;
     }
 
-    .tuesday .dot {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #000;
-      border-radius: 50%;
-      right: 24px;
-      top: 22px;
-    }
-
-    .wednesday .day-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #444;
-    }
-
-    .wednesday .date-label {
-      font-size: 26px;
-      color: #333;
-    }
-
-    .thursday .day-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #555;
-    }
-
-    .thursday .date-label {
-      font-size: 24px;
-      color: #444;
-    }
-
-    .thursday .dot {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: #999;
-      border-radius: 50%;
-      right: 24px;
-      top: 20px;
-    }
-
-    .friday .day-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #666;
-    }
-
-    .friday .date-label {
-      font-size: 22px;
-      color: #555;
-    }
-
-    .saturday .day-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #777;
-    }
-
-    .saturday .date-label {
-      font-size: 20px;
-      color: #666;
-    }
-
-    .sunday .day-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #888;
-    }
-
-    .sunday .date-label {
-      font-size: 18px;
-      color: #777;
-    }
-
+    .wednesday .day-label,
+    .thursday .day-label,
+    .friday .day-label,
+    .saturday .day-label,
+    .sunday .day-label,
     .next-monday .day-label {
       font-size: 14px;
       font-weight: 500;
-      color: #999;
+      color: rgba(255,255,255,0.7);
     }
 
+    .wednesday .date-label,
+    .thursday .date-label,
+    .friday .date-label,
+    .saturday .date-label,
+    .sunday .date-label,
     .next-monday .date-label {
-      font-size: 16px;
-      color: #888;
+      font-size: 24px;
+      color: #fff;
     }
 
     /* Tuesday */
     .day-card.tuesday {
-      top: 120px;
+      top: 108px;
       left: 22px;
       right: 22px;
       width: auto;
-      height: 130px;
+      height: 140px;
       z-index: 70;
       padding: 24px;
       gap: 6px;
-      background: #f0e6d3;
+      background: #e8a849;
       border: none;
       box-shadow: 0 5px 18px rgba(0, 0, 0, 0.086), 0 1px 2px rgba(0, 0, 0, 0.051);
     }
 
     /* Wednesday */
     .day-card.wednesday {
-      top: 155px;
+      top: 140px;
       left: 28px;
       right: 28px;
       width: auto;
-      height: 120px;
+      height: 135px;
       z-index: 60;
       padding: 20px 24px;
       gap: 4px;
-      background: #d4e4ed;
+      background: #5b9bd5;
+      color: #fff;
       border: none;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.078), 0 1px 2px rgba(0, 0, 0, 0.039);
     }
 
     /* Thursday */
     .day-card.thursday {
-      top: 182px;
+      top: 168px;
       left: 34px;
       right: 34px;
       width: auto;
-      height: 120px;
+      height: 130px;
       z-index: 50;
       padding: 20px 24px;
       gap: 4px;
-      background: #e8d5e0;
+      background: #c75b8e;
+      color: #fff;
       border: none;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.031);
     }
 
     /* Friday */
     .day-card.friday {
-      top: 205px;
+      top: 193px;
       left: 40px;
       right: 40px;
       width: auto;
-      height: 115px;
+      height: 130px;
       z-index: 40;
       padding: 20px 24px;
       gap: 4px;
-      background: #d3e8d0;
+      background: #4bae72;
+      color: #fff;
       border: none;
       box-shadow: 0 3px 12px rgba(0, 0, 0, 0.063), 0 1px 2px rgba(0, 0, 0, 0.031);
     }
 
     /* Saturday */
     .day-card.saturday {
-      top: 224px;
+      top: 215px;
       left: 46px;
       right: 46px;
       width: auto;
-      height: 110px;
+      height: 125px;
       z-index: 30;
       padding: 20px 24px;
       gap: 4px;
-      background: #fce4c1;
+      background: #e8793a;
+      color: #fff;
       border: none;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.051), 0 1px 1px rgba(0, 0, 0, 0.024);
     }
 
     /* Sunday */
     .day-card.sunday {
-      top: 240px;
+      top: 234px;
       left: 52px;
       right: 52px;
       width: auto;
-      height: 110px;
+      height: 125px;
       z-index: 20;
       padding: 20px 24px;
       gap: 4px;
-      background: #cde0f0;
+      background: #3a8fc2;
+      color: #fff;
       border: none;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.039);
     }
 
     /* Monday (next week) */
     .day-card.next-monday {
-      top: 253px;
+      top: 250px;
       left: 58px;
       right: 58px;
       width: auto;
-      height: 110px;
+      height: 120px;
       z-index: 10;
       padding: 20px 24px;
       gap: 4px;
-      background: #e0dce8;
+      background: #7b6ca5;
+      color: #fff;
       border: 1px solid rgba(0, 0, 0, 0.012);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.031);
     }
@@ -957,16 +906,16 @@
     const tiltThreshold = 10; // start expanding at ~10° left tilt
 
     // Card positions: top (CSS default stacked), stackY (scroll-compressed), expandY (tilt-expanded, evenly spaced)
-    const cardSpacing = 130; // spacing when fully expanded
+    const cardSpacing = 150; // spacing when fully expanded
     const cards = [
       { sel: '.today',       top: 0,   stackY: 0,   expandY: 0 * cardSpacing, scaleMin: 1,    scaleExpand: 1 },
-      { sel: '.tuesday',     top: 120, stackY: 18,  expandY: 1 * cardSpacing, scaleMin: 0.97, scaleExpand: 0.98 },
-      { sel: '.wednesday',   top: 155, stackY: 32,  expandY: 2 * cardSpacing, scaleMin: 0.94, scaleExpand: 0.96 },
-      { sel: '.thursday',    top: 182, stackY: 44,  expandY: 3 * cardSpacing, scaleMin: 0.91, scaleExpand: 0.94 },
-      { sel: '.friday',      top: 205, stackY: 54,  expandY: 4 * cardSpacing, scaleMin: 0.88, scaleExpand: 0.92 },
-      { sel: '.saturday',    top: 224, stackY: 62,  expandY: 5 * cardSpacing, scaleMin: 0.85, scaleExpand: 0.90 },
-      { sel: '.sunday',      top: 240, stackY: 68,  expandY: 6 * cardSpacing, scaleMin: 0.82, scaleExpand: 0.88 },
-      { sel: '.next-monday', top: 253, stackY: 73,  expandY: 7 * cardSpacing, scaleMin: 0.79, scaleExpand: 0.86 },
+      { sel: '.tuesday',     top: 108, stackY: 18,  expandY: 1 * cardSpacing, scaleMin: 0.97, scaleExpand: 0.98 },
+      { sel: '.wednesday',   top: 140, stackY: 32,  expandY: 2 * cardSpacing, scaleMin: 0.94, scaleExpand: 0.96 },
+      { sel: '.thursday',    top: 168, stackY: 44,  expandY: 3 * cardSpacing, scaleMin: 0.91, scaleExpand: 0.94 },
+      { sel: '.friday',      top: 193, stackY: 54,  expandY: 4 * cardSpacing, scaleMin: 0.88, scaleExpand: 0.92 },
+      { sel: '.saturday',    top: 215, stackY: 62,  expandY: 5 * cardSpacing, scaleMin: 0.85, scaleExpand: 0.90 },
+      { sel: '.sunday',      top: 234, stackY: 68,  expandY: 6 * cardSpacing, scaleMin: 0.82, scaleExpand: 0.88 },
+      { sel: '.next-monday', top: 250, stackY: 73,  expandY: 7 * cardSpacing, scaleMin: 0.79, scaleExpand: 0.86 },
     ];
     const cardEls = cards.map(c => ({ ...c, el: document.querySelector(c.sel) }));
     let currentExpandRatio = 0; // 0 = normal, 1 = fully expanded by tilt
